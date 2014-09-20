@@ -32,7 +32,7 @@ Follow the instructions for installing [ARChon](https://github.com/vladikoff/chr
 
 5 . Select which platform you which to build for, your replacement app slot (if you're using Chrome OS), resolution options, and the APK file you wish to use.
 
-6 . Press Build. If all is well, it will prompt you a location to save your converted folder in. The process will take a few seconds to complete. If it was not possible to automatically get the package name, you must enter it yourself. This is given in the application's URL on the Play Store, after the part where it says *?id*. For example, if the url is:
+6 . Press Build. If all is well, it will prompt you for a location to save your converted folder in. The process will take a few seconds to complete. If it was not possible to automatically get the package name, you must enter it yourself. This is given in the application's URL on the Play Store, after the part where it says *?id*. For example, if the url is:
 
     https://play.google.com/store/apps/details?id=com.app.vodio&hl=en
 
