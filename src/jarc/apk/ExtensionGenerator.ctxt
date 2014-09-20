@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=key\ orientation\ pkgName\ pForm\ apk
+comment0.target=ExtensionGenerator(int,\ java.lang.String,\ java.lang.String,\ java.lang.String,\ java.io.File)
+comment0.text=\r\n\ Creates\ a\ new\ extension\ generator\ object\r\n\ @param\ key\ Selects\ which\ application\ key\ to\ use\ so\ the\ extension\ can\ load\ on\ a\ ChromeBook.\ \ 0\ is\ none.\ 1\ -\ 4\ for\ the\ rest\ of\ the\ slots\r\n\ @param\ orientation\ Determines\ the\ orientation\ of\ the\ package\r\n\ @param\ pkgName\ The\ name\ of\ the\ package\r\n\ @param\ pForm\ The\ form\ factor\r\n\ @param\ apk\ Path\ to\ the\ APK\ file\r\n
+comment1.params=path
+comment1.target=void\ generate(java.io.File)
+comment1.text=\r\n\ Generates\ the\ extension\ folder\r\n\ @param\ path\ The\ path\ to\ create\ the\ file\r\n
+numComments=2
