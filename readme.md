@@ -7,12 +7,12 @@ Important Notes:
 * You will most likely need a special version of Chrome called [Chrome Canary](http://www.google.com/intl/en/chrome/browser/canary.html) for the time being if you are using ARChon.
 * 32 bit computers are not supported by ARChon at this time
 * JRE 7 or later is required to run this application.
-* Previously, I was unable to run java applications created by me on a Mac. It's prboably best to build from the source to avoid errors.
+* Previously, I was unable to run java applications created by me on a Mac. It's probably best to build from the source to avoid errors.
 
 Instructions:
 ---
 
-1 . __Chrome OS Users__: You must download one or more of the newly released Android apps available on the store. They are all currently on the featured ticker, so they should be easy to find. They apps are:
+1 . __Chrome OS Users__: You must download one or more of the newly released Android apps available on the store. They are all currently on the featured ticker, so they should be easy to find. The apps are:
 * [Vine](https://chrome.google.com/webstore/detail/vine/plfjlfohfjjpmmifkbcmalnmcebkklkh)
 * [Duolingo](https://chrome.google.com/webstore/detail/duolingo/ebnhfamfopiobpaehmebmfjcgkaogihe)
 * [EverNote](http://chrome.google.com/webstore/detail/dhfolfjkgpeaojbiicgheljefkfbbfkc)
