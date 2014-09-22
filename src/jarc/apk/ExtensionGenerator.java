@@ -58,7 +58,7 @@ public class ExtensionGenerator {
         InputStream manifest = ExtensionGenerator.class.getClassLoader().getResourceAsStream("jarc/res/manifest.json");
 
         String absPath = path.getAbsolutePath(); // get the full path to write
-        String sep = "\\"; //path separator
+        String sep = File.separator; //path separator
         try{
             //write directories needed
             File baseDir = new File(absPath + sep +  pkg);
