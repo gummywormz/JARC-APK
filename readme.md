@@ -5,9 +5,9 @@ The goal of this project is to create a simple and portable APK builder for ARC 
 Important Notes:
 ---
 * You will most likely need a special version of Chrome called [Chrome Canary](http://www.google.com/intl/en/chrome/browser/canary.html) for the time being if you are using ARChon.
-* 32 bit computers are not supported by ARChon at this time
+* Use the 32 bit version of ARChon if you are using regular Chrome regardless of your actual processor architecture. Use the 64 bit version for Chrome Canary
 * JRE 7 or later is required to run this application.
-* Previously, I was unable to run java applications created by me on a Mac. It's probably best to build from the source to avoid errors.
+* If you have any issues clicking the build button, especially on OS X, try building it yourself from the source. [BlueJ](http://www.bluej.org/) packages are included in the source, so you can just open it, add the apk-parser library, then compile and build.  
 
 Instructions:
 ---
@@ -19,6 +19,8 @@ Instructions:
 * [Sight Words](https://chrome.google.com/webstore/detail/kids-sight-words/inpoiemibmljfjmjmlokfdllnkjejhai)
    
 After installing them, you will receive the appropriate runtime that is needed.
+
+UPDATE: Since ARM binaries of ARChon have been released, you can use that if you can't get online or want to be able to have an unlimited number of (unpinnable) apps.
    
 __Chrome Browser / ARChon Users:__
    
