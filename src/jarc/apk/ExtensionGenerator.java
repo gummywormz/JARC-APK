@@ -18,10 +18,13 @@ import java.util.List;
 public class ExtensionGenerator {
 
     private final int useKey;
+    private final boolean useADB;
+    private final String appName;
     private final String pkg;
     private final String form;
     private final File apkPath;
     private final String orientationSetting;
+    public static final String sep = File.separator; //path separator
     //keys for the different apps
     private static final String[] keys = {
             ""
@@ -37,12 +40,16 @@ public class ExtensionGenerator {
      * @param pkgName The name of the package
      * @param pForm The form factor
      * @param apk Path to the APK file
+     * @param adb Enable ADB support
+     * @param app Application name 
      */
-    public ExtensionGenerator(int key, String orientation , String pkgName, String pForm, File apk){
+    public ExtensionGenerator(int key, String orientation , String pkgName, String pForm, File apk, boolean adb, String app){
         useKey = key;
         pkg = pkgName;
         form = pForm;
         apkPath = apk;
+        useADB = adb;
+        appName = app;
         orientationSetting = orientation;
     }
 
@@ -58,7 +65,6 @@ public class ExtensionGenerator {
         InputStream manifest = ExtensionGenerator.class.getClassLoader().getResourceAsStream("jarc/res/manifest.json");
 
         String absPath = path.getAbsolutePath(); // get the full path to write
-        String sep = File.separator; //path separator
         try{
             //write directories needed
             File baseDir = new File(absPath + sep +  pkg);
@@ -77,27 +83,28 @@ public class ExtensionGenerator {
             while((len=locales.read(buf))>0){
                 out.write(buf,0,len);
             }
+            out.close();
             out = new FileOutputStream(baseDir.getAbsolutePath() + sep + "app_main.html");
             buf = new byte[1024];
             len = 0;
             while((len=htmlPage.read(buf))>0){
                 out.write(buf,0,len);
             }
-
+            out.close();
             out = new FileOutputStream(baseDir.getAbsolutePath() + sep + "icon.png");
             buf = new byte[1024];
             len = 0;
             while((len=icon.read(buf))>0){
                 out.write(buf,0,len);
             }
-
+            out.close();
             out = new FileOutputStream(baseDir.getAbsolutePath() + sep + "manifest.json");
             buf = new byte[1024];
             len = 0;
             while((len=manifest.read(buf))>0){
                 out.write(buf,0,len);
             }
-
+            out.close();
             //now, edit the manifest as needed. first, get the lines and store them in a list
             List<String> lines = Files.readAllLines(Paths.get(baseDir.getAbsolutePath() + sep + "manifest.json"), StandardCharsets.UTF_8);
             String[] rLines = new String[lines.size()];
@@ -124,6 +131,15 @@ public class ExtensionGenerator {
                 if(line.contains("__orientation__")){
                     rLines[j] = line.replace("__orientation__",orientationSetting);
                 }
+                //set up the adb stuff (convenience methods woo)
+                if(line.contains("enableAdb")){
+                    rLines[j] = line.replace("\"__ADB__\"",Boolean.toString(useADB));
+                }
+                //change app name
+                if(line.contains("__MSG_extName__")){
+                    rLines[j] = line.replace("__MSG_extName__",appName);
+                }
+
                 //key stuff for chromebooks
                 if(line.contains("__key__")){
                     //if we're building for ARChon, "delete" the line

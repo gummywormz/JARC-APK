@@ -9,6 +9,7 @@
       "enableExternalDirectory": false,
       "formFactor": "__form__",
       "name": "__PACKAGE__",
+      "enableAdb": "__ADB__",
       "orientation": "__orientation__",
       "packageName": "__PACKAGE__",
       "useGoogleContactsSyncAdapter": false,

@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class ResourceCopierTest {
 
     public static void main(String[] args){
-        ExtensionGenerator test = new ExtensionGenerator(1,"landscape","com.me.testpkg","tablet",new File("F:\\butt.apk"));
+        ExtensionGenerator test = new ExtensionGenerator(1,"landscape","com.me.testpkg","tablet",new File("F:\\butt.apk"),false,"Test App");
         Scanner kin = new Scanner(System.in);
         System.out.print("Enter path name: ");
         String path = kin.next();

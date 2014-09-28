@@ -7,9 +7,16 @@
 package jarc.apk;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JToggleButton;
+import javax.swing.ListModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import net.erdfelt.android.apk.AndroidApk;
 
@@ -18,6 +25,9 @@ import net.erdfelt.android.apk.AndroidApk;
  * @author Paul Alves
  */
 public class JARCUI extends javax.swing.JFrame {
+
+    private ArrayList<String> files = new ArrayList<>();
+    private DefaultListModel<String> fileListModel = new DefaultListModel<>();
 
     /**
      * Creates new form JARCUI
@@ -43,6 +53,7 @@ public class JARCUI extends javax.swing.JFrame {
         errorText = new javax.swing.JLabel();
         writeDir = new javax.swing.JFileChooser();
         readAPK = new javax.swing.JFileChooser();
+        addAdditionalFile = new javax.swing.JFileChooser();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         chromeOSBuild = new javax.swing.JRadioButton();
@@ -51,6 +62,7 @@ public class JARCUI extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         pkgName = new javax.swing.JTextField();
         autoGetAPK = new javax.swing.JCheckBox();
+        appNameBox = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         slot1 = new javax.swing.JRadioButton();
@@ -62,11 +74,18 @@ public class JARCUI extends javax.swing.JFrame {
         useTablet = new javax.swing.JCheckBox();
         landscapeOrientation = new javax.swing.JRadioButton();
         portraitOrientation = new javax.swing.JRadioButton();
+        enableAdb = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         apkBox = new javax.swing.JTextField();
         browseAPK = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        filesList = new javax.swing.JList();
+        addFile = new javax.swing.JButton();
+        delFile = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
         buildIt = new javax.swing.JButton();
 
         errorDia.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -76,10 +95,10 @@ public class JARCUI extends javax.swing.JFrame {
 
         okError.setText("OK");
         okError.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    okErrorActionPerformed(evt);
-                }
-            });
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okErrorActionPerformed(evt);
+            }
+        });
 
         errorText.setText("jLabel7");
 
@@ -146,12 +165,12 @@ public class JARCUI extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(chromeOSBuild)
                 .addGap(6, 6, 6)
                 .addComponent(archonBuild)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
 
         jLabel2.setText("Build Target:");
@@ -161,8 +180,10 @@ public class JARCUI extends javax.swing.JFrame {
         pkgName.setText("Enter a package name");
 
         autoGetAPK.setSelected(true);
-        autoGetAPK.setText("Try to automatically get name");
+        autoGetAPK.setText("Try to automatically get package name");
         autoGetAPK.setToolTipText("Tries to parse the APK in order to get the package name.");
+
+        appNameBox.setText("Enter an app name");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -170,9 +191,10 @@ public class JARCUI extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(autoGetAPK)
-                    .addComponent(pkgName, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pkgName)
+                    .addComponent(appNameBox))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -182,10 +204,12 @@ public class JARCUI extends javax.swing.JFrame {
                 .addComponent(pkgName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(autoGetAPK)
+                .addGap(18, 18, 18)
+                .addComponent(appNameBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel3.setText("Package Name:");
+        jLabel3.setText("Package / App Name:");
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -246,6 +270,8 @@ public class JARCUI extends javax.swing.JFrame {
         portraitOrientation.setSelected(true);
         portraitOrientation.setText("Portrait Orientation");
 
+        enableAdb.setText("Enable ADB");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -254,6 +280,7 @@ public class JARCUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(useTablet)
+                    .addComponent(enableAdb)
                     .addComponent(landscapeOrientation)
                     .addComponent(portraitOrientation))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -263,6 +290,8 @@ public class JARCUI extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(useTablet)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(enableAdb)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(landscapeOrientation)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -276,10 +305,10 @@ public class JARCUI extends javax.swing.JFrame {
 
         browseAPK.setText("Browse...");
         browseAPK.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    browseAPKActionPerformed(evt);
-                }
-            });
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseAPKActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -290,9 +319,9 @@ public class JARCUI extends javax.swing.JFrame {
                 .addComponent(apkBox)
                 .addContainerGap())
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(99, 99, 99)
+                .addGap(229, 229, 229)
                 .addComponent(browseAPK)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(227, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -306,43 +335,97 @@ public class JARCUI extends javax.swing.JFrame {
 
         jLabel6.setText("APK:");
 
+        jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        filesList.setModel(getListModel());
+        filesList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(filesList);
+
+        addFile.setText("Add");
+        addFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addFileActionPerformed(evt);
+            }
+        });
+
+        delFile.setText("Delete");
+        delFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delFileActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(delFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(addFile)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(delFile)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jLabel7.setText("Additional Files:");
+
         buildIt.setText("Build");
         buildIt.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    buildItActionPerformed(evt);
-                }
-            });
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buildItActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(133, 133, 133)
+                .addComponent(jLabel1)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1))
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(114, 114, 114)
-                                .addComponent(buildIt)))
-                        .addGap(115, 115, 115))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel5)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabel6)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(243, 243, 243)
+                        .addComponent(buildIt)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(134, 134, 134))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -350,26 +433,32 @@ public class JARCUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addGap(10, 10, 10)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel4)
-                .addGap(10, 10, 10)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel5)
-                .addGap(4, 4, 4)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buildIt)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -385,12 +474,32 @@ public class JARCUI extends javax.swing.JFrame {
         build();
     }//GEN-LAST:event_buildItActionPerformed
 
+    private ListModel getListModel(){
+    return fileListModel;
+    }
+    
     private void browseAPKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseAPKActionPerformed
         int returnVal = readAPK.showOpenDialog(JARCUI.this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             apkBox.setText(readAPK.getSelectedFile().getAbsolutePath());
         }
     }//GEN-LAST:event_browseAPKActionPerformed
+
+    private void addFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFileActionPerformed
+        int returnVal = addAdditionalFile.showOpenDialog(JARCUI.this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            files.add(addAdditionalFile.getSelectedFile().getAbsolutePath());
+            fileListModel.addElement(addAdditionalFile.getSelectedFile().getAbsolutePath());
+            filesList.setModel(fileListModel);
+        }
+    }//GEN-LAST:event_addFileActionPerformed
+
+    private void delFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delFileActionPerformed
+        int index = filesList.getSelectedIndex();
+        if(index < 0){return;}
+        files.remove(index);
+        fileListModel.removeElementAt(index);
+    }//GEN-LAST:event_delFileActionPerformed
 
     private void build(){
         //set up variables
@@ -448,7 +557,7 @@ public class JARCUI extends javax.swing.JFrame {
             }
         }
         else{
-            if(pkgName.getText().isEmpty() || pkgName.getText() == null || pkgName.getText().equals("Enter a package name") ){
+            if(pkgName.getText().isEmpty() || pkgName.getText().equals("Enter a package name") ){
                 throwError("Please enter a package name or check \"Try to automatically get name\".");
                 return;
             }
@@ -456,11 +565,42 @@ public class JARCUI extends javax.swing.JFrame {
                 pkg = pkgName.getText();
             }
         }
+        boolean adb = enableAdb.isSelected();
+        String appName = appNameBox.getText();
+        if(appName.isEmpty() || appName.equals("Enter an app name")){
+            appName = "Unnamed App";
+        }
         //finally write everything
         int returnVal = writeDir.showSaveDialog(JARCUI.this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            ExtensionGenerator x = new ExtensionGenerator(key,orientation,pkg,formFactor,apk);
+            ExtensionGenerator x = new ExtensionGenerator(key,orientation,pkg,formFactor,apk,adb,appName);
             x.generate(writeDir.getSelectedFile());
+            String sep = ExtensionGenerator.sep;
+            File dumpFiles = new File(writeDir.getSelectedFile() + sep + pkg + sep + "vendor" + sep + "chromium" + sep + "crx" + sep);
+            if(!dumpFiles.exists() || files.isEmpty()){
+                return;
+            }
+
+            InputStream inStream = null; 
+            OutputStream outStream = null; 
+            for(String s : files)
+            {
+                try{ 
+                    File oFile = new File(s);
+                    File f = new File(dumpFiles.getAbsolutePath() + sep +  oFile.getName());
+                    inStream = new FileInputStream(oFile); 
+                    outStream = new FileOutputStream(f); 
+                    byte[] buffer = new byte[1024]; 
+                    int length; 
+                    while ((length = inStream.read(buffer)) > 0){ 
+                        outStream.write(buffer, 0, length); 
+                    } 
+                    inStream.close(); 
+                    outStream.close(); 
+                }catch(IOException e){ 
+                    throwError("Could not copy one or more additional files. Please check that they exist and you have access to them.");
+                } 
+            }
         }
 
     }
@@ -478,7 +618,8 @@ public class JARCUI extends javax.swing.JFrame {
             errorDia.setTitle("Error!");
         }
         errorDia.pack();
-        errorDia.show();
+        errorDia.setLocationRelativeTo(null); //center ze window
+        errorDia.setVisible(true);
     }
 
     /**
@@ -518,26 +659,35 @@ public class JARCUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFileChooser addAdditionalFile;
+    private javax.swing.JButton addFile;
     private javax.swing.JTextField apkBox;
+    private javax.swing.JTextField appNameBox;
     private javax.swing.JRadioButton archonBuild;
     private javax.swing.JCheckBox autoGetAPK;
     private javax.swing.JButton browseAPK;
     private javax.swing.JButton buildIt;
     private javax.swing.ButtonGroup buildTarget;
     private javax.swing.JRadioButton chromeOSBuild;
+    private javax.swing.JButton delFile;
+    private javax.swing.JCheckBox enableAdb;
     private static javax.swing.JDialog errorDia;
     private static javax.swing.JLabel errorText;
+    private javax.swing.JList filesList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton landscapeOrientation;
     private javax.swing.JButton okError;
     private javax.swing.ButtonGroup orientationGroup;
