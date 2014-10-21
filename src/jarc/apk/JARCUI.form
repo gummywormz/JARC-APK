@@ -243,9 +243,8 @@
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="buildTarget"/>
             </Property>
-            <Property name="selected" type="boolean" value="true"/>
-            <Property name="text" type="java.lang.String" value="Chrome OS"/>
-            <Property name="toolTipText" type="java.lang.String" value="Builds the application for use on a ChromeBook or on Chrome OS."/>
+            <Property name="text" type="java.lang.String" value="Chrome OS (Version 37 or earlier)"/>
+            <Property name="toolTipText" type="java.lang.String" value="Builds the application for use on a ChromeBook or on Chrome OS older than version 38."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="archonBuild">
@@ -253,8 +252,9 @@
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="buildTarget"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Chrome / ARChon"/>
-            <Property name="toolTipText" type="java.lang.String" value="Builds the application for Chrome running ARChon."/>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value="Chrome / ARChon / Chrome OS"/>
+            <Property name="toolTipText" type="java.lang.String" value="Builds the application for Chrome running ARChon or Chrome OS running later than version 37."/>
           </Properties>
         </Component>
       </SubComponents>

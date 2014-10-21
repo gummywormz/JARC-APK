@@ -144,13 +144,13 @@ public class JARCUI extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         buildTarget.add(chromeOSBuild);
-        chromeOSBuild.setSelected(true);
-        chromeOSBuild.setText("Chrome OS");
-        chromeOSBuild.setToolTipText("Builds the application for use on a ChromeBook or on Chrome OS.");
+        chromeOSBuild.setText("Chrome OS (Version 37 or earlier)");
+        chromeOSBuild.setToolTipText("Builds the application for use on a ChromeBook or on Chrome OS older than version 38.");
 
         buildTarget.add(archonBuild);
-        archonBuild.setText("Chrome / ARChon");
-        archonBuild.setToolTipText("Builds the application for Chrome running ARChon.");
+        archonBuild.setSelected(true);
+        archonBuild.setText("Chrome / ARChon / Chrome OS");
+        archonBuild.setToolTipText("Builds the application for Chrome running ARChon or Chrome OS running later than version 37.");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
