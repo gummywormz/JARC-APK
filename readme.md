@@ -2,6 +2,22 @@ JARC-APK
 ===
 The goal of this project is to create a simple and portable APK builder for ARC and ARChon. The current builder is horribly clunky to even try to get installed. This is meant for the average person to just download the apk, set their options, and go.
 
+Command line options:
+---
+(Bold arguments are required)
+
+|Argument | Description|
+|---------|------------|
+**-i**        | **Full path to the input file / apk**|
+**-o**        | **Full path to the output directory**|
+-n            | Name of the app. Default is the package name|
+-e            | Enable ADB support. (You do not need "true", only -e) Default is false|
+-f            | Form factor. Either *phone* or *tablet*. Default is *phone*|
+-r            | Orientation. Either *landscape* or *portrait*. Default is *portrait* |
+-k            | Key number to use. Any number 1 - 4. Default is 0|
+
+
+
 Important Notes:
 ---
 * You will most likely need a special version of Chrome called [Chrome Canary](http://www.google.com/intl/en/chrome/browser/canary.html) for the time being if you are using ARChon.
