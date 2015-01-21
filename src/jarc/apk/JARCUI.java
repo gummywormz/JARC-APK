@@ -610,6 +610,11 @@ public class JARCUI extends javax.swing.JFrame {
      * @param text The error text to display
      */
     public static void throwError(String text){
+        
+        //this is probably a very horrible way to do this...
+        
+        if(errorText == null){System.out.println(text);return;}
+        
         errorText.setText(text);
         if(text.equals("Operation Complete!")){
             errorDia.setTitle("Done!");
@@ -626,6 +631,54 @@ public class JARCUI extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
+        if(args.length >= 4)
+        {
+            System.out.println("JARC-APK v1.3\ngummywormz.github.io");
+            
+            String input = null;
+            String output = null;
+            boolean enableAdb = false;
+            String form = null;
+            String orientation = null;
+            String appname = null;
+            String pkg = null;
+            int key = 0;
+            for(int i = 0; i < args.length; i++)
+            {
+                if(args[i].equals("-i")){input = args[i+1];}
+                if(args[i].equals("-o")){output = args[i+1];}
+                if(args[i].equals("-n")){appname = args[i+1];}
+                if(args[i].equals("-e")){enableAdb = true;}
+                if(args[i].equals("-f")){form = args[i+1];}
+                if(args[i].equals("-r")){orientation = args[i+1];}
+                if(args[i].equals("-k")){key = Integer.parseInt(args[i+1]);}
+            }
+            
+            if (input == null || output == null){System.out.println("Input or output not specified"); System.exit(1);}
+            if (form == null){form = "phone";}
+            if (orientation == null){orientation = "portrait";}
+
+            
+            AndroidApk a;
+            try {
+                a = new AndroidApk(new File(input));
+                pkg = a.getPackageName();
+            } catch (IOException ex) {
+                System.out.println("Invalid Apk"); 
+                System.exit(1);
+            }
+            
+            if (appname == null){appname = pkg;}
+            
+            
+            ExtensionGenerator x = new ExtensionGenerator(key,orientation,pkg,form,new File(input),enableAdb,appname);
+            File f = new File(output);
+            x.generate(f);
+            System.exit(0);
+        
+        }
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
